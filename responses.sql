@@ -114,12 +114,15 @@ join med_dep
     and emp.salario >= med_dep.avg;
 
 /* QUESTÃO LIVRE:
-   Mostrar o total de salários dos supordinados de cada chefe  */
+   Mostrar o total de salários dos supordinados de cada chefe e quando corresponde ao total da empresa */
 select chf.nome as nome_chefe,
-    sum(emp.salario) total_salarios
+    sum(emp.salario) total_salarios,
+    round(sum(emp.salario) * 100.0 / (
+        select sum(salario)
+        from empregados as emp        
+    ), 2) || '%'
 from empregados as emp
-join empregados as chf
+left join empregados as chf
     on chf.emp_id = emp.supervisor_id
 group by 1
 order by 2 desc;
-
