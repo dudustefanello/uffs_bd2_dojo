@@ -13,7 +13,25 @@ join departamentos as dep
     on dep.dep_id = emp.dep_id
 group by dep.nome;
 
-/* ---3--- */
+/* 3 */
+with max_dep as (
+    select dep.dep_id,
+        dep.nome,
+        max(emp.salario)
+    from empregados as emp
+    join departamentos as dep
+        on dep.dep_id = emp.dep_id
+    group by dep.dep_id
+)
+select *
+from empregados as emp
+join max_dep
+    on emp.dep_id = max_dep.dep_id
+    and emp.salario = max_dep.salario;
+
+
+
+
 select dep.nome, 
     emp.nome,
     max(emp.salario)
